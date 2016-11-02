@@ -33,6 +33,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
 } else {
     $response["error"] = TRUE;
     $response["error_msg"] = "Required parameter is missing!";
+    $response["error_no"] = "3";
     echo json_encode($response);
 }
 
