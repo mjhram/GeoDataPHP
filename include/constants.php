@@ -1,4 +1,5 @@
 <?php
+
 /*
 if (!defined('twoDays')) define("twoDays", 48*3600);
 if (!defined('MinutesBeforeNow')) define("MinutesBeforeNow", 15);

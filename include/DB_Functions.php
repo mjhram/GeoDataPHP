@@ -21,7 +21,7 @@ class DB_Functions {
     function __destruct() {
          
     }
-
+ 
 	public function login() {
 		$insertStr = "INSERT INTO users() VALUES()";
 		$result = mysqli_query($GLOBALS["___mysqli_ston"], $insertStr);

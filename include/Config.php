@@ -1,6 +1,5 @@
 <?php
- 
-/**
+ /**
  * Database config variables
  */
 define("DB_HOST", "ajerlitaxicom.ipagemysql.com");

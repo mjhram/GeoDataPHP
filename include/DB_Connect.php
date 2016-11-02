@@ -1,6 +1,6 @@
 <?php
 class DB_Connect {
- 
+  
     // constructor
     function __construct() {
          

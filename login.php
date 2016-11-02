@@ -6,7 +6,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
     // include db handler
     require_once 'include/DB_Functions.php';
     $db = new DB_Functions();
- 
+  
     // response Array
     $response = array("tag" => $tag, "error" => FALSE);
      // check for tag type
