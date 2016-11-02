@@ -1,6 +1,6 @@
 <?php
 //define our "maximum idle period" to be 30 minutes
-$mins = 30;
+$mins = 30; 
 //set the time limit before a session expires
 ini_set ("session.gc_maxlifetime", $mins * 60);
 session_start();
