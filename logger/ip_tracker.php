@@ -17,7 +17,9 @@ if(isset($_POST)) {
 }
 $current_page = $page_name."?".$query_string;
 //connect to the database using your database settings
-require_once '../include/DB_Functions.php';
+
+
+require_once 'include/DB_Functions.php';
 $db = new DB_Functions();
 
 if(isset($_SESSION["tracking"])){

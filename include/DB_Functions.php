@@ -1,13 +1,11 @@
 <?php
-
-
-if (!class_exists('TestClass')) {
+if (!class_exists('DB_Functions')) {
 	class DB_Functions
 	{
 
 		private $db;
 		public $con;
-
+		public $what;
 		//put your code here
 		// constructor
 		function __construct()
@@ -17,6 +15,7 @@ if (!class_exists('TestClass')) {
 			$this->db = new DB_Connect();
 			$con = $this->con = $this->db->connect();
 			mysqli_set_charset($con, 'utf8');
+			$this->what = "Geo";
 		}
 
 		// destructor

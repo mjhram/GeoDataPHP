@@ -13,7 +13,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
     $response = array("tag" => $tag, "error" => FALSE);
      // check for tag type
     if ($tag == 'login') {
-
+        //echo "--".$db->what;
         $user = $db->login();
         if ($user != false) {
             $response["error"] = FALSE;
