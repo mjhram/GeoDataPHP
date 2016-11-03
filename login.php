@@ -6,7 +6,7 @@ include("logger/ip_tracker.php");
 if (isset($_POST['tag']) && $_POST['tag'] != '') {
     $tag = $_POST['tag'];
     // include db handler
-    include 'include/DB_Functions.php';
+    require_once 'include/DB_Functions.php';
     $db = new DB_Functions();
 
     // response Array
