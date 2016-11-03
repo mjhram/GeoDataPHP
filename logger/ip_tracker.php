@@ -51,7 +51,7 @@ if(isset($_SESSION["tracking"])){
         $entry_id = mysqli_insert_id($db->con);
         $lowest_sql = mysqli_query($db->con, "SELECT MAX(visitor_id) as next FROM visitor_tracking");
         if($lowest_sql != false) {
-            $lowest_row = mysqli_fetch_array($db->con, $lowest_sql);
+            $lowest_row = mysqli_fetch_array($lowest_sql, MYSQLI_ASSOC);
             $lowest = $lowest_row["next"];
             if(!isset($lowest))
                 $lowest = 1;
