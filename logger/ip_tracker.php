@@ -3,8 +3,8 @@
 $mins = 30; 
 //set the time limit before a session expires
 ini_set ("session.gc_maxlifetime", $mins * 60);
-//session_save_path("/home/users/web/b2750/ipg.ajerlitaxicom/cgi-bin/tmp");
-//session_start();
+session_save_path("/home/users/web/b2750/ipg.ajerlitaxicom/cgi-bin/tmp");
+session_start();
 $ip_address = $_SERVER["REMOTE_ADDR"];
 $page_name = $_SERVER["SCRIPT_NAME"];
 $query_string = "";
