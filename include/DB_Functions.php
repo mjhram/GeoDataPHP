@@ -43,6 +43,12 @@ class DB_Functions {
 		return false;//user not exist
 	}
 
+	public function updateUserRegId($userId, $regId) {
+		$sql = "UPDATE users SET regId = '$regId' WHERE id='$userId'";
+		$result = mysqli_query($GLOBALS["___mysqli_ston"], $sql);
+		return !$result;
+	}
+
 	public function storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime) {
 		if($this->userExists($uid) == false) {
 			$newId = login();
@@ -181,6 +187,8 @@ class DB_Functions {
             return false;
         }
     }
+
+
 
 	public function isUserNameExist($name) {
 		$result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT uid, unique_id, name, email, phone, regId, Type, created_at, updated_at, Type from users WHERE name = '$name'");

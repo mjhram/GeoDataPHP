@@ -6,7 +6,14 @@ ini_set ("session.gc_maxlifetime", $mins * 60);
 session_start();
 $ip_address = $_SERVER["REMOTE_ADDR"];
 $page_name = $_SERVER["SCRIPT_NAME"];
-$query_string = $_SERVER["QUERY_STRING"] ."&POST:".json_encode($_POST);
+$query_string = "";
+if(isset($_SERVER["QUERY_STRING"])) {
+    $query_string = $_SERVER["QUERY_STRING"];
+}
+if(isset($_POST)) {
+    $query_string = $query_string ."&POST:".json_encode($_POST);
+
+}
 $current_page = $page_name."?".$query_string;
 //connect to the database using your database settings
 set_include_path("../");

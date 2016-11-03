@@ -15,7 +15,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
 		$long = $_POST['long'];
 		$speed = $_POST['speed'];
 		$bearing = $_POST['bearing'];
-		$accuracy = $_POST['accurace'];
+		$accuracy = $_POST['accuracy'];
 		$fixtime = $_POST['fixtime'];
 		//check if the passenger has active request
 		$success = $db->storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime);
