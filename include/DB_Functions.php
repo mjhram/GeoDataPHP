@@ -56,16 +56,9 @@ if (!class_exists('DB_Functions')) {
 
 		public function storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime)
 		{
-			if ($this->userExists($uid) == false) {
-				$newId = login();
-				if ($newId != false) {
-					$uid = $newId;
-				} else {
-					$uid = -1;//unknown user
-				}
-			}
 			$insertStr = "INSERT INTO `geo`(`userid` ,`lat` ,`long` ,`speed` ,`bearing` ,`accuracy` ,`fixtime` ) "
-				. "VALUES('$uid, '$lat', '$long', '$speed', '$bearing', '$accuracy', '$fixtime')";
+				. "VALUES($uid, '$lat', '$long', '$speed', '$bearing', '$accuracy', '$fixtime')";
+			//echo $insertStr;
 			$result = mysqli_query($GLOBALS["___mysqli_ston"], $insertStr);
 			if ($result) {
 				return true;//success

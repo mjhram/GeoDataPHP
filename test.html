@@ -6,8 +6,23 @@
 </head>
 <body>
 
-<form method=post action="login.php">
-    <input type="hidden" name="tag" value="login"/>
+<form method=post action="addLocation.php">
+    <label class="grey" for="uid">uid:</label>
+    <input class="field" type="text" name="uid" id="uid"  value="10"/>
+    <label class="grey" for="lat">lat:</label>
+    <input class="field" type="text" name="lat" id="lat"  value="33.314708353845724"/>
+    <label class="grey" for="long">long:</label>
+    <input class="field" type="text" name="long" id="long"  value="44.45239777761093"/>
+    <label class="grey" for="speed">speed:</label>
+    <input class="field" type="text" name="speed" id="speed"  value="0.0"/>
+    <label class="grey" for="bearing">bearing:</label>
+    <input class="field" type="text" name="bearing" id="bearing"  value="0.0"/>
+    <label class="grey" for="accuracy">accuracy:</label>
+    <input class="field" type="text" name="accuracy" id="accuracy"  value="6.0"/>
+    <label class="grey" for="fixtime">fixtime:</label>
+    <input class="field" type="text" name="fixtime" id="fixtime"  value="1.478197599999E12"/>
+
+    <input type="hidden" name="tag" value="addLocation"/>
     <input type=submit>
 </form>
 

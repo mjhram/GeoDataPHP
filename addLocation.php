@@ -17,7 +17,16 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
 		$bearing = $_POST['bearing'];
 		$accuracy = $_POST['accuracy'];
 		$fixtime = $_POST['fixtime'];
-		//check if the passenger has active request
+		//check if the user exists
+		if ($db->userExists($uid) == false) {
+			$newId = $db->login();
+			if ($newId != false) {
+				$uid = $newId;
+				$response["uid"] = $uid;
+			} else {
+				$uid = -1;//unknown user
+			}
+		}
 		$success = $db->storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime);
 	    if($success) {
             $response["error"] = false;
