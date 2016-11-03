@@ -3,7 +3,8 @@
 $mins = 30; 
 //set the time limit before a session expires
 ini_set ("session.gc_maxlifetime", $mins * 60);
-session_start();
+//session_save_path("/home/users/web/b2750/ipg.ajerlitaxicom/cgi-bin/tmp");
+//session_start();
 $ip_address = $_SERVER["REMOTE_ADDR"];
 $page_name = $_SERVER["SCRIPT_NAME"];
 $query_string = "";
@@ -17,7 +18,7 @@ if(isset($_POST)) {
 $current_page = $page_name."?".$query_string;
 //connect to the database using your database settings
 set_include_path("../");
-require_once 'include/DB_Functions.php';
+include 'include/DB_Functions.php';
 $db = new DB_Functions();
 
 if(isset($_SESSION["tracking"])){
@@ -50,12 +51,17 @@ if(isset($_SESSION["tracking"])){
         $_SESSION["tracking"] = true;
         $entry_id = mysqli_insert_id($db->con);
         $lowest_sql = mysqli_query($db->con, "SELECT MAX(visitor_id) as next FROM visitor_tracking");
-        $lowest_row = mysqli_fetch_array($db->con, $lowest_sql);
-        $lowest = $lowest_row["next"];
-        if(!isset($lowest))
+        if($lowest_sql != false) {
+            $lowest_row = mysqli_fetch_array($db->con, $lowest_sql);
+            $lowest = $lowest_row["next"];
+            if(!isset($lowest))
+                $lowest = 1;
+            else
+                $lowest++;
+        } else {
             $lowest = 1;
-        else
-            $lowest++;
+        }
+
         //update the visitor entry with the new visitor id
         //Note, that we do it in this way to prevent a "race condition"
         mysqli_query($db->con, "UPDATE visitor_tracking SET visitor_id = '$lowest' WHERE entry_id = '$entry_id'");
@@ -66,3 +72,4 @@ if(isset($_SESSION["tracking"])){
         $_SESSION["current_page"] = $current_page;
     }
 }
+mysqli_close($db->con);
