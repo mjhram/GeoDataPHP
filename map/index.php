@@ -13,21 +13,22 @@
             <div class="form-group">
                 <label for="sel1">Select list:</label>
                 <select class="form-control" id="sel1">
-                    <option>All</option>
+                    <option onclick=show()>All</option>
                     <?php
                         set_include_path("../");
                         require_once 'include/DB_Functions.php';
                         $db = new DB_Functions();
-                        $query = "SELECT DISTINCT DATE_Format(`time`,'%d %m %y') AS date FROM `geo`";
+                        $query = "SELECT DISTINCT DATE_Format(`time`,'%d-%m-%Y') AS date FROM `geo`";
                         $result = mysqli_query($db->con, $query);
                         while ($row = mysqli_fetch_assoc($result)){
-                            echo "<option>".$row['date']."</option>";
+                            $aDate = $row['date'];
+                            echo "<option onclick=show(".$aDate.")>".$aDate."</option>";
                         }
                     ?>
                 </select>
             </div>
 
-            
+
             <div class="row">
 
                 <div class="col-lg-8 col-lg-offset-2">

@@ -23,7 +23,7 @@
       }
     };*/
 
-    function load() {
+    function show($date) {
       var map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(33.3436491, 44.4343689),
         zoom: 11,
@@ -32,7 +32,7 @@
       var infoWindow = new google.maps.InfoWindow;
 
       // Change this depending on the name of your PHP file
-      downloadUrl("phpsqlajax_genxml.php", function(data) {
+      downloadUrl("phpsqlajax_genxml.php?date=".$date, function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
         for (var i = 0; i < markers.length; i++) {
@@ -102,14 +102,22 @@
 
 <body onload="load()">
 <div class="container">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Date
-      <span class="caret"></span></button>
-    <ul class="dropdown-menu">
-      <li><a href="#">HTML</a></li>
-      <li><a href="#">CSS</a></li>
-      <li><a href="#">JavaScript</a></li>
-    </ul>
+  <div class="form-group">
+    <label for="sel1">Select list:</label>
+    <select class="form-control" id="sel1">
+      <option onclick=show()>All</option>
+      <?php
+                        set_include_path("../");
+                        require_once 'include/DB_Functions.php';
+                        $db = new DB_Functions();
+                        $query = "SELECT DISTINCT DATE_Format(`time`,'%d-%m-%Y') AS date FROM `geo`";
+                        $result = mysqli_query($db->con, $query);
+      while ($row = mysqli_fetch_assoc($result)){
+      $aDate = $row['date'];
+      echo "<option onclick=show(".$aDate.")>".$aDate."</option>";
+      }
+      ?>
+    </select>
   </div>
 
   <div class="row">
