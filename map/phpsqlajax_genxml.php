@@ -13,8 +13,11 @@ function parseToXML($htmlStr)
     $xmlStr=str_replace("'",'&apos;',$xmlStr);
     $xmlStr=str_replace("&",'&amp;',$xmlStr);
     return $xmlStr;
-} 
-$aDate = $_GET['date'];
+}
+if(isset($_GET['date']))
+    $aDate = $_GET['date'];
+else
+    $aDate = "";
 // Opens a connection to a mySQL server
 $db = new DB_Functions();
 
@@ -31,7 +34,10 @@ if (!$db_selected) {
 
 // Select all the rows in the markers table
 //$query = "SELECT * FROM geo WHERE 1";
-$query = "SELECT *, DATE_Format(`time`,'%d-%m-%Y') AS date FROM `geo` HAVING date = '$aDate'";
+$query = "SELECT *, DATE_Format(`time`,'%d-%m-%Y') AS date FROM `geo`";
+if(!empty($aDate)) {
+    $query .= "HAVING date = '$aDate'";
+}
 
 $result = mysqli_query($db->con, $query);
 if (!$result) {

@@ -29,6 +29,8 @@
         zoom: 11,
         mapTypeId: 'roadmap'
       });
+      var infoWindow = new google.maps.InfoWindow;
+
       // Change this depending on the name of your PHP file
       downloadUrl("phpsqlajax_genxml.php", function(data) {
         var xml = data.responseXML;
@@ -43,10 +45,16 @@
             acc = 5;
           }
           var point = new google.maps.LatLng(
-              parseFloat(markers[i].getAttribute("lat")),
-              parseFloat(markers[i].getAttribute("lng")));
+                  parseFloat(markers[i].getAttribute("lat")),
+                  parseFloat(markers[i].getAttribute("lng")));
           var html = "<b>" + name + "</b> <br/>" + address;
-
+          /*var icon = customIcons[type] || {};
+           var marker = new google.maps.Marker({
+            map: map,
+            position: point,
+            icon: icon.icon
+          });
+          bindInfoWindow(marker, map, infoWindow, html);*/
           var cityCircle = new google.maps.Circle({
             strokeColor: '#FF0000',
             strokeOpacity: 0.8,
@@ -61,14 +69,12 @@
       });
     }
 
-
-
-    /*function bindInfoWindow(marker, map, infoWindow, html) {
+    function bindInfoWindow(marker, map, infoWindow, html) {
       google.maps.event.addListener(marker, 'click', function() {
         infoWindow.setContent(html);
         infoWindow.open(map, marker);
       });
-    }*/
+    }
 
     function downloadUrl(url, callback) {
       var request = window.ActiveXObject ?
@@ -96,6 +102,16 @@
 
 <body onload="load()">
 <div class="container">
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Date
+      <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#">HTML</a></li>
+      <li><a href="#">CSS</a></li>
+      <li><a href="#">JavaScript</a></li>
+    </ul>
+  </div>
+
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2">
     </div><!-- /.8 -->
