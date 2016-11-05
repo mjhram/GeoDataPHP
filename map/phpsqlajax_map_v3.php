@@ -29,8 +29,9 @@
         zoom: 11,
         mapTypeId: 'roadmap'
       });
+
       // Change this depending on the name of your PHP file
-      downloadUrl("phpsqlajax_genxml.php", function(data) {
+      /*downloadUrl("phpsqlajax_genxml.php?date=".$date, function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
         for (var i = 0; i < markers.length; i++) {
@@ -58,10 +59,54 @@
             radius: acc * 1
           });
         }
-      });
+      });*/
     }
 
+    function show($date) {
+      var map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(33.3436491, 44.4343689),
+        zoom: 11,
+        mapTypeId: 'roadmap'
+      });
+      var infoWindow = new google.maps.InfoWindow;
 
+      // Change this depending on the name of your PHP file
+      downloadUrl("phpsqlajax_genxml.php?date=".$date, function(data) {
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+          var name = markers[i].getAttribute("name");
+          var address = markers[i].getAttribute("address");
+          var type = markers[i].getAttribute("type");
+          var acc = markers[i].getAttribute("accuracy");
+          if(acc == 0.0)
+          {
+            acc = 5;
+          }
+          var point = new google.maps.LatLng(
+                  parseFloat(markers[i].getAttribute("lat")),
+                  parseFloat(markers[i].getAttribute("lng")));
+          var html = "<b>" + name + "</b> <br/>" + address;
+          /*var icon = customIcons[type] || {};
+           var marker = new google.maps.Marker({
+            map: map,
+            position: point,
+            icon: icon.icon
+          });
+          bindInfoWindow(marker, map, infoWindow, html);*/
+          var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.0,
+            map: map,
+            center: point,
+            radius: acc * 1
+          });
+        }
+      });
+    }
 
     /*function bindInfoWindow(marker, map, infoWindow, html) {
       google.maps.event.addListener(marker, 'click', function() {
@@ -88,6 +133,13 @@
 
     function doNothing() {}
 
+    function myFunction() {
+      var x = document.getElementById("sel1").value;
+      show(x);
+      //var x = document.getElementById("mySelect").value;
+      //document.getElementById("demo").innerHTML = "You selected: " + x;
+    }
+
     //]]>
 
   </script>
@@ -96,6 +148,26 @@
 
 <body onload="load()">
 <div class="container">
+  <div class="form-group">
+    <label for="sel1">Select list:</label>
+    <select class="form-control" id="sel1" onchange="myFunction()">
+      <option value="">All</option>
+      <?php
+                        set_include_path("../");
+                        require_once 'include/DB_Functions.php';
+                        $db = new DB_Functions();
+                        $query = "SELECT DISTINCT DATE_Format(`time`,'%d-%m-%Y') AS date FROM `geo`";
+                        $result = mysqli_query($db->con, $query);
+      while ($row = mysqli_fetch_assoc($result)){
+          $aDate = $row['date'];
+          echo "<option value='".$aDate."'>".$aDate."</option>" ."\n";
+      }
+      ?>
+    </select>
+  </div>
+
+
+  <p id="demo"></p>
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2">
     </div><!-- /.8 -->
