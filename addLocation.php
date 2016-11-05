@@ -17,6 +17,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
 		$bearing = $_POST['bearing'];
 		$accuracy = $_POST['accuracy'];
 		$fixtime = $_POST['fixtime'];
+		$hasInfo = $_POST['hasInfo'];
 		//check if the user exists
 		if ($db->userExists($uid) == false) {
 			$newId = $db->login();
@@ -27,7 +28,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
 				$uid = -1;//unknown user
 			}
 		}
-		$success = $db->storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime);
+		$success = $db->storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime, $hasInfo);
 	    if($success) {
             $response["error"] = false;
             $response["error_msg"] = "no error. Data added successfully";

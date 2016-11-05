@@ -54,10 +54,10 @@ if (!class_exists('DB_Functions')) {
 			return !$result;
 		}
 
-		public function storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime)
+		public function storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime, $hasInfo)
 		{
-			$insertStr = "INSERT INTO `geo`(`userid` ,`lat` ,`long` ,`speed` ,`bearing` ,`accuracy` ,`fixtime` ) "
-				. "VALUES($uid, '$lat', '$long', '$speed', '$bearing', '$accuracy', '$fixtime')";
+			$insertStr = "INSERT INTO `geo`(`userid` ,`lat` ,`long` ,`speed` ,`bearing` ,`accuracy` ,`fixtime` , `hasInfo`) "
+				. "VALUES($uid, '$lat', '$long', $speed, $bearing, $accuracy, $fixtime, $hasInfo)";
 			//echo $insertStr;
 			$result = mysqli_query($GLOBALS["___mysqli_ston"], $insertStr);
 			if ($result) {

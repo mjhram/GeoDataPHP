@@ -1,5 +1,9 @@
 <?php
-require("phpsqlajax_dbinfo.php");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+set_include_path("../");
+require_once 'include/DB_Functions.php';
 
 function parseToXML($htmlStr) 
 { 
@@ -12,7 +16,9 @@ return $xmlStr;
 } 
 
 // Opens a connection to a mySQL server
-$connection=mysql_connect (localhost, $username, $password);
+$db = new DB_Functions();
+
+/*$connection=mysql_connect (localhost, $username, $password);
 if (!$connection) {
   die('Not connected : ' . mysql_error());
 }
@@ -21,13 +27,13 @@ if (!$connection) {
 $db_selected = mysql_select_db($database, $connection);
 if (!$db_selected) {
   die ('Can\'t use db : ' . mysql_error());
-}
+}*/
 
 // Select all the rows in the markers table
-$query = "SELECT * FROM markers WHERE 1";
-$result = mysql_query($query);
+$query = "SELECT * FROM geo WHERE 1";
+$result = mysqli_query($db->con, $query);
 if (!$result) {
-  die('Invalid query: ' . mysql_error());
+  die('Invalid query: ' . mysqli_error($db->con));
 }
 
 header("Content-type: text/xml");
@@ -36,14 +42,16 @@ header("Content-type: text/xml");
 echo '<markers>';
 
 // Iterate through the rows, printing XML nodes for each
-while ($row = @mysql_fetch_assoc($result)){
+while ($row = mysqli_fetch_assoc($result)){
   // ADD TO XML DOCUMENT NODE
   echo '<marker ';
-  echo 'name="' . parseToXML('&','&amp;', $row['name']) . '" ';
-  echo 'address="' . parseToXML($row['address']) . '" ';
+  echo 'name="Marker Name" ';
+  echo 'address="Marker Address" ';
   echo 'lat="' . $row['lat'] . '" ';
-  echo 'lng="' . $row['lng'] . '" ';
-  echo 'type="' . $row['type'] . '" ';
+  echo 'lng="' . $row['long'] . '" ';
+  echo 'speed="' . $row['speed'] . '" ';
+  echo 'accuracy="' . $row['accuracy'] . '" ';
+  echo 'type="resturant" ';
   echo '/>';
 }
 
