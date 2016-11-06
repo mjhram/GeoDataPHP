@@ -71,7 +71,8 @@
       var infoWindow = new google.maps.InfoWindow;
 
       // Change this depending on the name of your PHP file
-      downloadUrl("phpsqlajax_genxml.php?date=".$date, function(data) {
+      //alert("phpsqlajax_genxml.php?date="+$date);
+      downloadUrl("phpsqlajax_genxml.php?date="+$date, function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
         for (var i = 0; i < markers.length; i++) {
@@ -87,13 +88,7 @@
                   parseFloat(markers[i].getAttribute("lat")),
                   parseFloat(markers[i].getAttribute("lng")));
           var html = "<b>" + name + "</b> <br/>" + address;
-          /*var icon = customIcons[type] || {};
-           var marker = new google.maps.Marker({
-            map: map,
-            position: point,
-            icon: icon.icon
-          });
-          bindInfoWindow(marker, map, infoWindow, html);*/
+
           var cityCircle = new google.maps.Circle({
             strokeColor: '#FF0000',
             strokeOpacity: 0.8,
@@ -106,6 +101,7 @@
           });
         }
       });
+
     }
 
     /*function bindInfoWindow(marker, map, infoWindow, html) {
