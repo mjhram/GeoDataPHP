@@ -68,7 +68,7 @@
         zoom: 11,
         mapTypeId: 'roadmap'
       });
-      var infoWindow = new google.maps.InfoWindow;
+      //var infoWindow = new google.maps.InfoWindow;
 
       // Change this depending on the name of your PHP file
       //alert("phpsqlajax_genxml.php?date="+$date);
@@ -76,29 +76,63 @@
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
         for (var i = 0; i < markers.length; i++) {
-          var name = markers[i].getAttribute("name");
-          var address = markers[i].getAttribute("address");
-          var type = markers[i].getAttribute("type");
+          //var name = markers[i].getAttribute("name");
+          //var address = markers[i].getAttribute("address");
+          //var type = markers[i].getAttribute("type");
           var acc = markers[i].getAttribute("accuracy");
-          if(acc == 0.0)
+          var spd = markers[i].getAttribute("speed");
+          var bearing = markers[i].getAttribute("bearing");
+          var rot1 = Math.round(bearing);
+          if(acc>100) {
+            continue;
+          }
+          var rad1 = acc;
+          if(rad1 == 0.0)
           {
-            acc = 5;
+            rad1 = 5;
+          }
+          var sColor;
+          if(spd <3) {//10km/h
+              sColor = '#FF0000';
+          } else if(spd>=3 && spd<6) {//21km/h
+            sColor = '#FF8000';
+          } else if(spd>=6 && spd<12) {//43km/h
+            sColor = '#00FFFF';
+          } else if(spd>=12 && spd<20) {//72km/h
+            sColor = '#00FF00';
+          } else {
+
           }
           var point = new google.maps.LatLng(
                   parseFloat(markers[i].getAttribute("lat")),
                   parseFloat(markers[i].getAttribute("lng")));
-          var html = "<b>" + name + "</b> <br/>" + address;
+          //var html = "<b>" + name + "</b> <br/>" + address;
 
-          var cityCircle = new google.maps.Circle({
-            strokeColor: '#FF0000',
+          new google.maps.Marker({
+            map: map,
+            position: point,
+            icon: {
+              strokeColor: sColor,
+              strokeOpacity: 0.8,
+              strokeWeight: 1,
+              fillColor: '#FF0000',
+              fillOpacity: 0.0,
+              path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+              scale: 2,
+              rotation: rot1
+            }
+          });
+
+          /*var cityCircle = new google.maps.Circle({
+            strokeColor: sColor,
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: '#FF0000',
             fillOpacity: 0.0,
             map: map,
             center: point,
-            radius: acc * 1
-          });
+            radius: rad1 * 1
+          });*/
         }
       });
 
