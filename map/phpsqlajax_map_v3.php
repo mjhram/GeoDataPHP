@@ -92,14 +92,14 @@
             rad1 = 5;
           }
           var sColor;
-          if(spd <3) {//10km/h
-              sColor = '#FF0000';
-          } else if(spd>=3 && spd<6) {//21km/h
-            sColor = '#FF8000';
+          if(spd <1) {//3.6km/h
+              sColor = '#FF0000';//Red
+          } else if(spd>=1 && spd<6) {//21km/h
+            sColor = '#FF8000';//Orange
           } else if(spd>=6 && spd<12) {//43km/h
-            sColor = '#00FFFF';
+            sColor = '#00FFFF';//Cyan
           } else if(spd>=12 && spd<20) {//72km/h
-            sColor = '#00FF00';
+            sColor = '#00FF00';//Green
           } else {
 
           }

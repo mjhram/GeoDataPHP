@@ -51,17 +51,17 @@ echo '<markers>';
 
 // Iterate through the rows, printing XML nodes for each
 while ($row = mysqli_fetch_assoc($result)){
-  // ADD TO XML DOCUMENT NODE
-    echo '<marker ';
-    //echo 'name="Marker Name" ';
-    //echo 'address="Marker Address" ';
-    echo 'lat="' . $row['lat'] . '" ';
-    echo 'lng="' . $row['long'] . '" ';
-    echo 'speed="' . $row['speed'] . '" ';
-    echo 'accuracy="' . $row['accuracy'] . '" ';
-    echo 'bearing="' . $row['bearing'] . '" ';
-    //echo 'type="resturant" ';
-    echo '/>';
+    $hasInfo = $row['hasInfo'];
+    // accuracy, altitude, bearing, speed
+    if($hasInfo[2]=='1' &&$hasInfo[3]=='1') {
+        echo '<marker ';
+        echo 'lat="' . $row['lat'] . '" ';
+        echo 'lng="' . $row['long'] . '" ';
+        echo 'speed="' . $row['speed'] . '" ';
+        echo 'accuracy="' . $row['accuracy'] . '" ';
+        echo 'bearing="' . $row['bearing'] . '" ';
+        echo '/>';
+    }
 }
 
 // End XML file
