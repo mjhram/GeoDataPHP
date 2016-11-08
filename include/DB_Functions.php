@@ -54,16 +54,30 @@ if (!class_exists('DB_Functions')) {
 			return !$result;
 		}
 
-		public function storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime, $hasInfo)
+		private function getNewTripId($userId)
 		{
-			$insertStr = "INSERT INTO `geo`(`userid` ,`lat` ,`long` ,`speed` ,`bearing` ,`accuracy` ,`fixtime` , `hasInfo`) "
-				. "VALUES($uid, '$lat', '$long', $speed, $bearing, $accuracy, $fixtime, $hasInfo)";
+			$sql = "SELECT MAX(tripid) FROM geo WHERE userid='$userId'";
+			$result = mysqli_query($GLOBALS["___mysqli_ston"], $sql);
+			$row = mysqli_fetch_array($result);
+			return $row['max']+1;
+		}
+
+		//tripid>=0 => success
+		//-1 = failed
+		public function storeGeoData($uid, $tripid, $lat, $long, $speed, $bearing, $accuracy, $fixtime, $hasInfo)
+		{
+			if($tripid == -1) {
+				//assign new tripid:
+				$tripid = $this->getNewTripId($uid);
+			}
+			$insertStr = "INSERT INTO `geo`(`userid` ,`tripid` ,`lat` ,`long` ,`speed` ,`bearing` ,`accuracy` ,`fixtime` , `hasInfo`) "
+				. "VALUES($uid, $tripid, '$lat', '$long', $speed, $bearing, $accuracy, $fixtime, $hasInfo)";
 			//echo $insertStr;
 			$result = mysqli_query($GLOBALS["___mysqli_ston"], $insertStr);
 			if ($result) {
-				return true;//success
+				return $tripid;//success
 			} else {
-				return false;
+				return -1;
 			}
 		}
 

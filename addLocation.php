@@ -11,6 +11,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
 	// check for tag type
 	if ($tag == 'addLocation') {
 		$uid = $_POST['uid'];
+		$tripid = $_POST['tripid'];
 		$lat = $_POST['lat'];
 		$long = $_POST['long'];
 		$speed = $_POST['speed'];
@@ -23,13 +24,14 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
 			$newId = $db->login();
 			if ($newId != false) {
 				$uid = $newId;
-				$response["uid"] = $uid;
 			} else {
 				$uid = -1;//unknown user
 			}
 		}
-		$success = $db->storeGeoData($uid, $lat, $long, $speed, $bearing, $accuracy, $fixtime, $hasInfo);
-	    if($success) {
+		$response["uid"] = $uid;
+		$tripid = $db->storeGeoData($uid, $tripid, $lat, $long, $speed, $bearing, $accuracy, $fixtime, $hasInfo);
+	    if($tripid >= 0) {
+			$response["tripid"] = $tripid;
             $response["error"] = false;
             $response["error_msg"] = "no error. Data added successfully";
 			$response["error_no"] = "10";

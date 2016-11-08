@@ -34,6 +34,8 @@ if (!$db_selected) {
 
 // Select all the rows in the markers table
 //$query = "SELECT * FROM geo WHERE 1";
+$sql = "SET @@session.time_zone = '+03:00';";
+mysqli_query($db->con, $sql);
 $query = "SELECT *, DATE_Format(`time`,'%d-%m-%Y') AS date FROM `geo`";
 if(!empty($aDate)) {
     $query .= "HAVING date = '$aDate'";
