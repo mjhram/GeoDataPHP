@@ -38,10 +38,44 @@ class clustering_functions {
         //mysqli_query($this->con, $sql);
     }
 
+    function angleDiff($firstAngle, $secondAngle) {
+        $difference = $secondAngle - $firstAngle;
+        while ($difference < -180) $difference += 360;
+        while ($difference > 180) $difference -= 360;
+        return $difference;
+    }
+
+    function normAngle($difference) {
+        while ($difference < -180) $difference += 360;
+        while ($difference > 180) $difference -= 360;
+        return $difference;
+    }
+
     function cluster($lat, $lng, $bearing, $speed, $fixtime)
     {
-        //1. check if this point lies within x-meters from other points
-        
+        //1. check if this point lies within xy-meters from other points
+        $sql = "SELECT * FROM geoClustered";
+        $result = mysqli_query($this->con, $sql);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $diff = normAngle($bearing - $row['bearing']);
+            if(($lat > $row['lat']-0.00018 && $lat < $row['lat']+0.00018) && //~20m
+                ($lng>$row['long']-0.00022 && $lng < $row['long']+0.00022) && //~20m
+                ($diff >-45 && $diff<45)
+                )
+            {
+                //re average the speed
+                $n = $row['clusterN']+1;
+                $newSpeed = ($row['speed'] * $row['clusterN'] + $speed) /$n;
+                //store it
+                $id = $row['id'];
+                $sql = "UPDATE geoClustered SET speed = $newSpeed, clusterN=$n WHERE id='$id'";
+                mysqli_query($GLOBALS["___mysqli_ston"], $sql);
+                return;
+            }
+        }
+        //not belong to any cluster:
+        $sql = "INSERT INTO geoClustered (lat, long, speed, bearing, fixtime) VALUES('$lat', '$lng', $bearing, $speed, $fixtime)";
+        mysqli_query($GLOBALS["___mysqli_ston"], $sql);
     }
 }
 

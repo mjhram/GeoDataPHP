@@ -56,10 +56,10 @@ if (!class_exists('DB_Functions')) {
 
 		private function getNewTripId($userId)
 		{
-			$sql = "SELECT MAX(tripid) FROM geo WHERE userid='$userId'";
+			$sql = "SELECT MAX(tripid) as max FROM geo WHERE userid='$userId'";
 			$result = mysqli_query($GLOBALS["___mysqli_ston"], $sql);
 			$row = mysqli_fetch_array($result);
-			return $row['max']+1;
+			return ($row['max']+1);
 		}
 
 		//tripid>=0 => success
